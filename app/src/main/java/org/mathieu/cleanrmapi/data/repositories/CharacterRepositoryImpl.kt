@@ -34,7 +34,7 @@ internal class CharacterRepositoryImpl(
         return characterLocal
             .getCharacters().map { list ->
                 list.map { element ->
-                    val episodesUrl = element.episode
+                    val episodesUrl = element.episodes
                     val episodes: MutableList<Episode> = mutableListOf()
                     for(episodeUrl in episodesUrl) {
                         var episode = characterApi.getEpisode(episodeUrl.substringAfterLast("/").toInt())
@@ -50,7 +50,7 @@ internal class CharacterRepositoryImpl(
                     }
                     element.toModel(episodes)
                 }
-            }
+            }.also { if (it.first().isEmpty()) fetchNext() }
     }
 
 
@@ -106,10 +106,10 @@ internal class CharacterRepositoryImpl(
         val char = characterLocal.getCharacter(id)
 
         if (char != null) {
-            val episodesUrl = char.episode
+            val episodesUrl = char.episodes
             val episodes: MutableList<Episode> = mutableListOf()
             for (episodeUrl in episodesUrl) {
-                var episode = characterApi.getEpisode(episodeUrl.substringAfterLast("/").toInt())
+                val episode = characterApi.getEpisode(episodeUrl.substringAfterLast("/").toInt())
                 episodes.add(
                     Episode(
                         id = episode.id,

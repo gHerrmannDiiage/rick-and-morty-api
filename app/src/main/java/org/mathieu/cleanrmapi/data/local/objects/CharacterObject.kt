@@ -1,5 +1,7 @@
 package org.mathieu.cleanrmapi.data.local.objects
 
+import io.realm.kotlin.ext.realmListOf
+import io.realm.kotlin.types.RealmList
 import io.realm.kotlin.types.RealmObject
 import io.realm.kotlin.types.annotations.Ignore
 import io.realm.kotlin.types.annotations.PrimaryKey
@@ -42,9 +44,7 @@ internal class CharacterObject: RealmObject {
     var locationId: Int = -1
     var image: String = ""
     var created: String = ""
-    @Ignore
-    var episode: List<String> = mutableListOf()
-}
+    var episodes: RealmList<String> = realmListOf()}
 
 
 internal fun CharacterResponse.toRealmObject() = CharacterObject().also { obj ->
@@ -60,7 +60,7 @@ internal fun CharacterResponse.toRealmObject() = CharacterObject().also { obj ->
     obj.locationId = tryOrNull { location.url.split("/").last().toInt() } ?: -1
     obj.image = image
     obj.created = created
-    obj.episode = episode
+    obj.episodes.addAll(episode)
 }
 
 internal fun CharacterObject.toModel(episodes: List<Episode>) = Character(
