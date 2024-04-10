@@ -7,6 +7,7 @@ import org.mathieu.cleanrmapi.data.repositories.tryOrNull
 import org.mathieu.cleanrmapi.domain.models.character.Character
 import org.mathieu.cleanrmapi.domain.models.character.CharacterGender
 import org.mathieu.cleanrmapi.domain.models.character.CharacterStatus
+import org.mathieu.cleanrmapi.domain.models.episode.Episode
 
 /**
  * Represents a character entity stored in the SQLite database. This object provides fields
@@ -40,6 +41,7 @@ internal class CharacterObject: RealmObject {
     var locationId: Int = -1
     var image: String = ""
     var created: String = ""
+    var episode: List<String> = mutableListOf()
 }
 
 
@@ -56,16 +58,19 @@ internal fun CharacterResponse.toRealmObject() = CharacterObject().also { obj ->
     obj.locationId = tryOrNull { location.url.split("/").last().toInt() } ?: -1
     obj.image = image
     obj.created = created
+    obj.episode = episode
 }
 
-internal fun CharacterObject.toModel() = Character(
-    id = id,
-    name = name,
-    status = tryOrNull { CharacterStatus.valueOf(status) } ?: CharacterStatus.Unknown,
-    species = species,
-    type = type,
-    gender = tryOrNull { CharacterGender.valueOf(gender) } ?: CharacterGender.Unknown,
-    origin = originName to originId,
-    location = locationName to locationId,
-    avatarUrl = image
-)
+internal fun CharacterObject.toModel(episodes: List<Episode>) = Character(
+        id = id,
+        name = name,
+        status = tryOrNull { CharacterStatus.valueOf(status) } ?: CharacterStatus.Unknown,
+        species = species,
+        type = type,
+        gender = tryOrNull { CharacterGender.valueOf(gender) } ?: CharacterGender.Unknown,
+        origin = originName to originId,
+        location = locationName to locationId,
+        avatarUrl = image,
+        episodes = episodes
+    )
+
