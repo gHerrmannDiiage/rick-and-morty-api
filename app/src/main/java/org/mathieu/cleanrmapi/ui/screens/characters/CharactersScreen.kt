@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -105,15 +106,18 @@ private fun CharactersContent(
                 )
             } ?: LazyColumn {
 
-                items(state.characters) {
+                itemsIndexed(state.characters) {index, character ->
                     CharacterCard(
                         modifier = Modifier
                             .padding(8.dp)
                             .clickable {
-                                onAction(CharactersAction.SelectedCharacter(it))
+                                onAction(CharactersAction.SelectedCharacter(character))
                             },
-                        character = it
+                        character = character
                     )
+                    if(index == state.characters.size-1) {
+                        onAction(CharactersAction.LoadMoreCharacters)
+                    }
                 }
 
             }

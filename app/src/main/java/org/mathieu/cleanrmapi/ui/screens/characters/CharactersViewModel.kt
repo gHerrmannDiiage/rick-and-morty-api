@@ -9,6 +9,7 @@ import org.mathieu.cleanrmapi.ui.core.ViewModel
 
 sealed interface CharactersAction {
     data class SelectedCharacter(val character: Character): CharactersAction
+    object LoadMoreCharacters: CharactersAction
 }
 
 class CharactersViewModel(application: Application) : ViewModel<CharactersState>(CharactersState(), application) {
@@ -38,7 +39,14 @@ class CharactersViewModel(application: Application) : ViewModel<CharactersState>
     fun handleAction(action: CharactersAction) {
         when(action) {
             is CharactersAction.SelectedCharacter -> selectedCharacter(action.character)
+            is CharactersAction.LoadMoreCharacters -> loadMoreCharacters()
         }
+    }
+
+    private fun loadMoreCharacters() {
+        fetchData(
+            source = { characterRepository.loadMore() }
+        ) { }
     }
 
 
