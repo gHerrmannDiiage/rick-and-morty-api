@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -41,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
+import org.mathieu.cleanrmapi.ui.core.composables.EpisodeCardContent
 import org.mathieu.cleanrmapi.ui.core.composables.PreviewContent
 import org.mathieu.cleanrmapi.ui.core.theme.Purple40
 
@@ -141,7 +144,9 @@ private fun CharacterDetailsContent(
                 }
 
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     SubcomposeAsyncImage(
@@ -158,6 +163,14 @@ private fun CharacterDetailsContent(
                     Text(text = state.name)
                 }
 
+                LazyColumn {
+                    items(state.episodes) {
+                        EpisodeCardContent(
+                            date = it.airDate,
+                            title = it.episode+" - "+it.name
+                        )
+                    }
+                }
 
             }
         }

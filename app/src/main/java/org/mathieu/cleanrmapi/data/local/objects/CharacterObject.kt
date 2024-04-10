@@ -1,6 +1,7 @@
 package org.mathieu.cleanrmapi.data.local.objects
 
 import io.realm.kotlin.types.RealmObject
+import io.realm.kotlin.types.annotations.Ignore
 import io.realm.kotlin.types.annotations.PrimaryKey
 import org.mathieu.cleanrmapi.data.remote.responses.CharacterResponse
 import org.mathieu.cleanrmapi.data.repositories.tryOrNull
@@ -41,6 +42,7 @@ internal class CharacterObject: RealmObject {
     var locationId: Int = -1
     var image: String = ""
     var created: String = ""
+    @Ignore
     var episode: List<String> = mutableListOf()
 }
 
